@@ -12,6 +12,7 @@ int main(int argc, char **argv, char **env) {
   top->clk = 1;
   top->rst = 0;
   top->en = 1;
+  top->offset = 64; // change this
   for (int simcyc=0; simcyc<1000000; simcyc++) {
     for (int tick=0; tick<2; tick++) {
       tfp->dump (2*simcyc+tick);
