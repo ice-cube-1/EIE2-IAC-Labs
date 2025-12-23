@@ -1,5 +1,4 @@
-module rom #( parameter ADDRESS_WIDTH = 4, DATA_WIDTH = 32 ) (
-    input logic clk,
+module rom_async #( parameter ADDRESS_WIDTH = 4, DATA_WIDTH = 32 ) (
     input logic [ADDRESS_WIDTH-1:0] addr,
     output logic [DATA_WIDTH-1:0] dout
 );

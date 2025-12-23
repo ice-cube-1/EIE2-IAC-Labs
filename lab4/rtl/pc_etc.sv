@@ -3,8 +3,8 @@ module pc_etc (
     input logic rst,
     input logic [31:0] imm_op,
     input logic pc_src
-)
-    logic [31:0] pc;
+    output logic [4:0] pc
+);
     logic [31:0] next_pc;
     mux2 get_next_pc(
         .in1(pc + imm_op),
