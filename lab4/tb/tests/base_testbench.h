@@ -1,39 +1,37 @@
 #pragma once
 
-#include "base_testbench.h"
+#include "Vdut.h"
+#include "verilated.h"
+#include "verilated_vcd_c.h"
+#include "gtest/gtest.h"
 
-/**
- * Class only exists because top->clk is not always accessible in the testbench,
- * and will otherwise not compile.
- */
-class Testbench : public BaseTestbench
+#define MAX_SIM_CYCLES 10000
+
+class BaseTestbench : public ::testing::Test
 {
 public:
-    // Runs the simulation for a clock cycle, evaluates the DUT, dumps waveform.
-    void runSimulation(int cycles = 1)
+    void SetUp() override
     {
-        for (int i = 0; i < cycles; i++)
-        {
-            for (int clk = 0; clk < 2; clk++)
-            {
-                top->eval();
-#ifndef __APPLE__
-                tfp->dump(2 * ticks + clk);
-#endif
-                top->clk = !top->clk;
-            }
-            ticks++;
+        top = std::make_unique<Vdut>();
+        tfp = std::make_unique<VerilatedVcdC>();
 
-            if (Verilated::gotFinish())
-            {
-                exit(0);
-            }
-        }
+        Verilated::traceEverOn(true);
+        top->trace(tfp.get(), 99);
+        tfp->open("waveform.vcd");
+
+        initializeInputs();
     }
 
-    void compile(const std::string &program)
+    void TearDown() override
     {
-        // Compile
-        system(("./compile.sh " + program).c_str());
+        top->final();
+        tfp->close();
     }
+
+    virtual void initializeInputs() = 0;
+
+protected:
+    unsigned int ticks = 0;
+    std::unique_ptr<Vdut> top;
+    std::unique_ptr<VerilatedVcdC> tfp;
 };

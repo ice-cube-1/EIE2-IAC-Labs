@@ -2,13 +2,13 @@ module pc_etc (
     input logic clk,
     input logic rst,
     input logic [31:0] imm_op,
-    input logic pc_src
+    input logic pc_src,
     output logic [4:0] pc
 );
-    logic [31:0] next_pc;
-    mux2 get_next_pc(
-        .in1(pc + imm_op),
-        .in0(pc+4),
+    logic [4:0] next_pc;
+    mux2 #(5) get_next_pc(
+        .in1(pc + imm_op[4:0]),
+        .in0(pc+5'b100),
         .sel(pc_src),
         .out(next_pc)
     );

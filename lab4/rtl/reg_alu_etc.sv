@@ -27,10 +27,10 @@ module reg_alu_etc(
         .out(alu2)
     );
     alu alu_unit(
-        .alu_control(alu_control),
+        .alu_control(alu_ctrl),
         .a(alu1),
         .b(alu2),
         .result(result),
         .zero(zero)
-    )
+    );
 endmodule

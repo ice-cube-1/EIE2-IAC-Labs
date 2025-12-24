@@ -43,7 +43,7 @@ module control_unit (
                 imm_src = 2'b00;
                 alu_src = 1;
                 mem_write = 0;
-                result_src = 0
+                result_src = 0;
                 pc_src = 0;
                 alu_control = 3'b000;
             end

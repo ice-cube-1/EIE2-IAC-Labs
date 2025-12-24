@@ -1,7 +1,7 @@
 module sign_extend (
-    input logic instr [31:0],
-    input logic imm_src [1:0],
-    output logic imm_op [31:0]
+    input logic [31:0] instr,
+    input logic [1:0] imm_src,
+    output logic [31:0] imm_op
 );
     always_comb begin
         case (imm_src)
