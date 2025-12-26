@@ -14,7 +14,7 @@ module reg_file (
         if (reg_write) rf_registers[ad3] <= result;
     end
     always_comb begin
-        a0 = rf_registers[11];
+        a0 = rf_registers[10];
         rd1 = rf_registers[ad1];
         rd2 = rf_registers[ad2];
     end

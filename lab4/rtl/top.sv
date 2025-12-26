@@ -3,17 +3,13 @@ module top #(
 ) (
     input   logic clk,
     input   logic rst,
-    output  logic [DATA_WIDTH-1:0] a0,
-    output logic [6:0] pc,
-    output logic [5:0] opcode,
-    output logic [31:0] imm_op,
-    output logic zero
+    output  logic [DATA_WIDTH-1:0] a0
 );
-    logic [31:0] instr;
+    logic [31:0] instr, imm_op;
+    logic [6:0] pc;
     logic [1:0] imm_src;
     logic [2:0] alu_ctrl;
-    logic reg_write, alu_src, mem_write, result_src, pc_src;
-    assign opcode = instr[6:0];
+    logic reg_write, alu_src, mem_write, result_src, pc_src, zero;
     pc_etc progam_counters(
         .clk(clk),
         .rst(rst),
