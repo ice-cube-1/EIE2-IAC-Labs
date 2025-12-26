@@ -28,13 +28,13 @@ module control_unit (
                 pc_src = 0;
                 alu_control = 3'b000;
             end
-            // beq
+            // bne
             7'b1100011: begin
                 reg_write = 0;
                 imm_src = 2'b10;
                 alu_src = 0;
                 mem_write = 0;
-                pc_src = zero;
+                pc_src = !zero;
                 alu_control = 3'b001;
             end
             // addi
