@@ -8,6 +8,7 @@ protected:
     {
         top->clk = 1;
         top->rst = 0;
+        top->pc = 0;
     }
 };
 
@@ -15,8 +16,9 @@ TEST_F(CpuTestbench, BaseProgramTest)
 {
     system("./compile.sh asm/program.S");
 
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < 10; i++)
     {
+        std::cout << "Tick " << i << ": a0 = " << (int)top->a0 <<" " << (int)top->pc<<" "<<(int)top->instr<< std::endl;
         runSimulation(1);
         if (top->a0 == 254)
         {
