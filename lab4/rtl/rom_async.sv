@@ -8,9 +8,9 @@ module rom_async #( parameter ADDRESS_WIDTH = 7, DATA_WIDTH = 8 ) (
         $display("loaded rom");
     end;
     always_comb
-        dout = { rom_array[addr],
-                rom_array[addr+1],
+        dout = { rom_array[addr+3],
                 rom_array[addr+2],
-                rom_array[addr+3] };
+                rom_array[addr+1],
+                rom_array[addr] };
 
 endmodule

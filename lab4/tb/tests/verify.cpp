@@ -18,7 +18,7 @@ TEST_F(CpuTestbench, BaseProgramTest)
 
     for (int i = 0; i < 10; i++)
     {
-        std::cout << "Tick " << i << ": a0 = " << (int)top->a0 <<" " << (int)top->pc<<" "<<(int)top->instr<< std::endl;
+        std::cout << "Tick " << i << " "<< (int)top->pc_src <<" " << (int)top->pc<<" "<<(int)top->opcode<<" "<<top->a0<< std::endl;
         runSimulation(1);
         if (top->a0 == 254)
         {
