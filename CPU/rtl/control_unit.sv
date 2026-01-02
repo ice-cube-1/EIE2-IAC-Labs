@@ -47,6 +47,25 @@ module control_unit (
                 pc_src = 0;
                 alu_op = 2'b10;
             end
+            // r-type e.g. add
+            7'b0110011: begin
+                reg_write = 1;
+                alu_src = 0;
+                mem_write = 0;
+                result_src = 0;
+                pc_src = 0;
+                alu_op = 2'b10;
+            end
+            // lui
+            7'b0110111: begin
+                reg_write = 1;
+                imm_src = 2'b11;
+                alu_src = 1;
+                mem_write = 0;
+                result_src = 0;
+                pc_src = 0;
+                alu_op = 2'b00;
+            end
             default: ;
         endcase
         case (alu_op) 

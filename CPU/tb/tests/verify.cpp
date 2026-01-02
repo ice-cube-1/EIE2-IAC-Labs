@@ -56,6 +56,6 @@ TEST_F(CpuTestbench, TestPdf)
 int main(int argc, char **argv)
 {
     testing::InitGoogleTest(&argc, argv);
-    testing::GTEST_FLAG(filter) = "CpuTestbench.TestAddiBne";
+    testing::GTEST_FLAG(filter) = "CpuTestbench.TestLiAdd";
     return RUN_ALL_TESTS();
 }
