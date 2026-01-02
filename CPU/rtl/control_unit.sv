@@ -56,7 +56,7 @@ module control_unit (
                 pc_src = 0;
                 alu_op = 2'b00;
             end
-            // sb sh sw
+            // sb
             7'b0100011: begin
                 reg_write = 0;
                 imm_src = 2'b01;
@@ -65,12 +65,13 @@ module control_unit (
                 pc_src = 0;
                 alu_op = 2'b00;
             end
-            // lw lbu lhu
-            7'b000011: begin
+            // lbu
+            7'b0000011: begin
                 reg_write = 1;
                 imm_src = 2'b00;
                 alu_src = 1;
                 mem_write = 0;
+                result_src = 1;
                 pc_src = 0;
                 alu_op = 2'b00;
             end 
