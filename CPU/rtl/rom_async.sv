@@ -1,8 +1,8 @@
-module rom_async #( parameter ADDRESS_WIDTH = 7, DATA_WIDTH = 8 ) (
-    input logic [ADDRESS_WIDTH-1:0] addr,
+module rom_async #() (
+    input logic [31:0] addr,
     output logic [31:0] dout
 );
-    logic [DATA_WIDTH-1:0] rom_array [2**ADDRESS_WIDTH-1:0];
+    logic [7:0] rom_array [3217035263:3217031168];
     initial begin
         $readmemh("program.hex", rom_array);
     end;

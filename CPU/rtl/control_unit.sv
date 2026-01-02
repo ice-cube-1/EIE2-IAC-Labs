@@ -18,16 +18,6 @@ module control_unit (
         result_src = 0;
         pc_src = 0;
         case (instr[6:0])
-            // lw (untested)
-            7'b0000011: begin
-                reg_write = 1;
-                imm_src = 2'b00;
-                alu_src = 1;
-                mem_write = 0;
-                result_src = 1;
-                pc_src = 0;
-                alu_op = 2'b00;
-            end
             // beq / bne (does not work for other branch types)
             7'b1100011: begin
                 reg_write = 0;
@@ -66,6 +56,24 @@ module control_unit (
                 pc_src = 0;
                 alu_op = 2'b00;
             end
+            // sb sh sw
+            7'b0100011: begin
+                reg_write = 0;
+                imm_src = 2'b01;
+                alu_src = 1;
+                mem_write = 1;
+                pc_src = 0;
+                alu_op = 2'b00;
+            end
+            // lw lbu lhu
+            7'b000011: begin
+                reg_write = 1;
+                imm_src = 2'b00;
+                alu_src = 1;
+                mem_write = 0;
+                pc_src = 0;
+                alu_op = 2'b00;
+            end 
             default: ;
         endcase
         case (alu_op) 
