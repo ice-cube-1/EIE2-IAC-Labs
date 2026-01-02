@@ -9,6 +9,7 @@ module control_unit (
     output logic pc_src,
     output logic [2:0] alu_control
 );
+    logic [1:0] alu_op;
     always_comb begin
         reg_write = 0;
         imm_src = 2'b00;
@@ -16,9 +17,8 @@ module control_unit (
         mem_write = 0;
         result_src = 0;
         pc_src = 0;
-        alu_control = 3'b000;
         case (instr[6:0])
-            // lw
+            // lw (untested)
             7'b0000011: begin
                 reg_write = 1;
                 imm_src = 2'b00;
@@ -26,18 +26,18 @@ module control_unit (
                 mem_write = 0;
                 result_src = 1;
                 pc_src = 0;
-                alu_control = 3'b000;
+                alu_op = 2'b00;
             end
-            // bne
+            // beq / bne (does not work for other branch types)
             7'b1100011: begin
                 reg_write = 0;
                 imm_src = 2'b10;
                 alu_src = 0;
                 mem_write = 0;
-                pc_src = !zero;
-                alu_control = 3'b001;
+                pc_src = zero ^ instr[12];
+                alu_op = 2'b01;
             end
-            // addi
+            // i-type e.g. addi
             7'b0010011: begin
                 reg_write = 1;
                 imm_src = 2'b00;
@@ -45,9 +45,21 @@ module control_unit (
                 mem_write = 0;
                 result_src = 0;
                 pc_src = 0;
-                alu_control = 3'b000;
+                alu_op = 2'b10;
             end
             default: ;
+        endcase
+        case (alu_op) 
+            2'b00: alu_control = 3'b000;
+            2'b01: alu_control = 3'b001;
+            default: begin
+                if (instr[14:12] == 3'b000) begin
+                    if (instr[5] & instr[29]) alu_control = 3'b001;
+                    else alu_control = 3'b000;
+                end else if (instr[14:12] == 3'b010) alu_control = 3'b101;
+                else if (instr[14:12] == 3'b110) alu_control = 3'b011;
+                else if (instr[14:12] == 3'b111) alu_control = 3'b010;
+            end
         endcase
     end
 endmodule
