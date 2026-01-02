@@ -56,7 +56,6 @@ public:
                 top_->eval();
                 tfp_->dump(2 * ticks_ + clk);
                 top_->clk = !top_->clk;
-                std::cout<<top_->pc<<std::endl;
             }
             ticks_++;
 

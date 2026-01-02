@@ -9,7 +9,7 @@ TEST_F(CpuTestbench, TestAddiBne)
 {
     setupTest("1_addi_bne");
     initSimulation();
-    runSimulation(254*6+20);
+    runSimulation(CYCLES);
     EXPECT_EQ(top_->a0, 254);
 }
 

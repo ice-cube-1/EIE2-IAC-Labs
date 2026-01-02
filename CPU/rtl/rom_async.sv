@@ -4,8 +4,7 @@ module rom_async #( parameter ADDRESS_WIDTH = 7, DATA_WIDTH = 8 ) (
 );
     logic [DATA_WIDTH-1:0] rom_array [2**ADDRESS_WIDTH-1:0];
     initial begin
-        $readmemh("/home/alice/EIE2-IAC-Labs/lab4/rtl/program.hex", rom_array);
-        $display("loaded rom");
+        $readmemh("program.hex", rom_array);
     end;
     always_comb
         dout = { rom_array[addr+3],
