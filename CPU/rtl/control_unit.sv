@@ -2,17 +2,16 @@ module control_unit (
     input logic [31:0] instr,
     input logic zero,
     output logic reg_write,
-    output logic [1:0] imm_src,
+    output logic [2:0] imm_src,
     output logic alu_src,
     output logic mem_write,
-    output logic result_src,
-    output logic pc_src,
+    output logic [1:0] result_src, pc_src,
     output logic [2:0] alu_control
 );
     logic [1:0] alu_op;
     always_comb begin
         reg_write = 0;
-        imm_src = 2'b00;
+        imm_src = 3'b00;
         alu_src = 0;
         mem_write = 0;
         result_src = 0;
@@ -21,16 +20,16 @@ module control_unit (
             // beq / bne (does not work for other branch types)
             7'b1100011: begin
                 reg_write = 0;
-                imm_src = 2'b10;
+                imm_src = 3'b10;
                 alu_src = 0;
                 mem_write = 0;
-                pc_src = zero ^ instr[12];
+                pc_src = {1'b0, zero ^ instr[12]};
                 alu_op = 2'b01;
             end
             // i-type e.g. addi
             7'b0010011: begin
                 reg_write = 1;
-                imm_src = 2'b00;
+                imm_src = 3'b00;
                 alu_src = 1;
                 mem_write = 0;
                 result_src = 0;
@@ -49,7 +48,7 @@ module control_unit (
             // lui
             7'b0110111: begin
                 reg_write = 1;
-                imm_src = 2'b11;
+                imm_src = 3'b11;
                 alu_src = 1;
                 mem_write = 0;
                 result_src = 0;
@@ -59,7 +58,7 @@ module control_unit (
             // sb
             7'b0100011: begin
                 reg_write = 0;
-                imm_src = 2'b01;
+                imm_src = 3'b01;
                 alu_src = 1;
                 mem_write = 1;
                 pc_src = 0;
@@ -68,13 +67,31 @@ module control_unit (
             // lbu
             7'b0000011: begin
                 reg_write = 1;
-                imm_src = 2'b00;
+                imm_src = 3'b00;
                 alu_src = 1;
                 mem_write = 0;
                 result_src = 1;
                 pc_src = 0;
                 alu_op = 2'b00;
+            end
+            // jal
+            7'b1101111: begin
+                reg_write = 1;
+                imm_src = 3'b100;
+                alu_src = 1;
+                mem_write = 0;
+                result_src = 2'b10;
+                pc_src = 1;    
             end 
+            // jalr
+            7'b1100111: begin
+                reg_write = 1;
+                imm_src = 3'b00;
+                alu_src = 1;
+                mem_write = 0;
+                result_src = 2'b10;
+                pc_src = 2'b10;
+            end
             default: ;
         endcase
         case (alu_op) 

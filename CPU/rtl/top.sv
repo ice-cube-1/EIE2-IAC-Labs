@@ -4,16 +4,18 @@ module top (
     input   logic trigger,
     output  logic [31:0] a0
 );
-    logic [31:0] instr, imm_op, pc, alu_result, result, reg2, mem_result, alu1;
-    logic [1:0] imm_src;
-    logic [2:0] alu_ctrl;
-    logic reg_write, alu_src, mem_write, result_src, pc_src, zero;
+    logic [31:0] instr, imm_op, pc, pc_plus_4, alu_result, result, reg2, mem_result, alu1;
+    logic [2:0] alu_ctrl, imm_src;
+    logic [1:0] result_src, pc_src;
+    logic reg_write, alu_src, mem_write, zero;
     pc_etc progam_counters(
         .clk(clk),
         .rst(rst),
         .imm_op(imm_op),
+        .alu_result(alu_result),
         .pc_src(pc_src),
-        .pc(pc)
+        .pc(pc),
+        .pc_plus_4(pc_plus_4)
     );
     alu_etc alu(
         .alu_src(alu_src),
@@ -51,12 +53,13 @@ module top (
         .write_data(reg2),
         .dout(mem_result)
     );
-    mux2 #(32) get_result (
-        .in0(alu_result),
-        .in1(mem_result),
-        .sel(result_src),
-        .out(result)
-    );
+    always_comb begin
+        case (result_src)
+            0: result = alu_result;
+            1: result = mem_result;
+            2'b10: result = pc_plus_4;
+        endcase
+    end
     reg_file registers(
         .clk(clk),
         .ad1(instr[19:15]),
