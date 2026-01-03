@@ -41,12 +41,15 @@ module control_unit (
             2'b00: alu_control = 3'b000;
             2'b01: alu_control = 3'b001;
             default: begin
-                if (instr[14:12] == 3'b000) begin
-                    if (instr[5] & instr[30]) alu_control = 3'b001;
-                    else alu_control = 3'b000;
-                end else if (instr[14:12] == 3'b010) alu_control = 3'b101;
-                else if (instr[14:12] == 3'b110) alu_control = 3'b011;
-                else if (instr[14:12] == 3'b111) alu_control = 3'b010;
+                case (instr[14:12])
+                    3'b000: alu_control = (instr[30] & instr[5]) ? 3'b001 : 3'b000;
+                    3'b010: alu_control = 3'b101;
+                    3'b110: alu_control = 3'b011;
+                    3'b111: alu_control = 3'b010;
+                    3'b100: alu_control = 3'b100;
+                    3'b001: alu_control = 3'b110;
+                    default: alu_control = 3'b111;
+                endcase
             end
         endcase
     end
