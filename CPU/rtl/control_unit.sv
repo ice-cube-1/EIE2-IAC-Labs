@@ -36,7 +36,7 @@ module control_unit (
                 pc_src = 0;
                 alu_op = 2'b10;
             end
-            // r-type e.g. add
+            // add
             7'b0110011: begin
                 reg_write = 1;
                 alu_src = 0;
@@ -81,11 +81,12 @@ module control_unit (
                 alu_src = 1;
                 mem_write = 0;
                 result_src = 2'b10;
-                pc_src = 1;    
+                pc_src = 1;
+                alu_op = 2'b00;    
             end 
             // jalr
             7'b1100111: begin
-                reg_write = 1;
+                reg_write = 0;
                 imm_src = 3'b00;
                 alu_src = 1;
                 mem_write = 0;
@@ -99,7 +100,7 @@ module control_unit (
             2'b01: alu_control = 3'b001;
             default: begin
                 if (instr[14:12] == 3'b000) begin
-                    if (instr[5] & instr[29]) alu_control = 3'b001;
+                    if (instr[5] & instr[30]) alu_control = 3'b001;
                     else alu_control = 3'b000;
                 end else if (instr[14:12] == 3'b010) alu_control = 3'b101;
                 else if (instr[14:12] == 3'b110) alu_control = 3'b011;

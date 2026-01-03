@@ -45,16 +45,3 @@ TEST_F(CpuTestbench, TestPdf)
     runSimulation(CYCLES * 100);
     EXPECT_EQ(top_->a0, 15363);
 }
-
-int main(int argc, char **argv) {
-    testing::InitGoogleTest(&argc, argv);
-    auto res = RUN_ALL_TESTS();
-    return res;
-}
-
-// int main(int argc, char **argv)
-// {
-//     testing::InitGoogleTest(&argc, argv);
-//     testing::GTEST_FLAG(filter) = "CpuTestbench.TestLbuSb";
-//     return RUN_ALL_TESTS();
-// }
