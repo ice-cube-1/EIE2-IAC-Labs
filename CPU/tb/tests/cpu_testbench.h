@@ -46,6 +46,10 @@ public:
         top_->rst = 0;
     }
 
+    void set_trigger() {
+        top_-> trigger = 1;
+    }
+
     // Runs the simulation for a clock cycle, evaluates the DUT, dumps waveform.
     void runSimulation(int cycles = 1)
     {

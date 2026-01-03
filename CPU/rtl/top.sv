@@ -66,6 +66,7 @@ module top (
         .reg_write(reg_write),
         .result(result),
         .a0(a0),
+        .t6(trigger),
         .rd1(alu1),
         .rd2(reg2)
     );
