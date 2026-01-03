@@ -17,14 +17,12 @@ module top (
         .pc(pc),
         .pc_plus_4(pc_plus_4)
     );
-    alu_etc alu(
-        .alu_src(alu_src),
-        .alu_ctrl(alu_ctrl),
-        .imm_op(imm_op),
-        .zero(zero),
-        .reg2(reg2),
-        .alu1(alu1),
-        .alu_result(alu_result)
+    alu alu_unit(
+        .alu_control(alu_ctrl),
+        .a(alu1),
+        .b(alu_src ? imm_op : reg2),
+        .result(alu_result),
+        .zero(zero)
     );
     rom_async instruction_memory(
         .addr(pc),

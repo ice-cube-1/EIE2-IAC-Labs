@@ -1,97 +1,39 @@
 module control_unit (
     input logic [31:0] instr,
     input logic zero,
-    output logic reg_write,
-    output logic [2:0] imm_src,
-    output logic alu_src,
-    output logic mem_write,
+    output logic alu_src, mem_write, reg_write,
     output logic [1:0] result_src, pc_src,
-    output logic [2:0] alu_control
+    output logic [2:0] alu_control, imm_src
 );
     logic [1:0] alu_op;
+    logic [6:0] op = instr[6:0];
+    assign reg_write = (op == 7'b0010011 || op == 7'b0110011 || op == 7'b0110111 || op == 7'b0000011 || op == 7'b1101111);
+    assign mem_write = (op == 7'b0100011);
+    assign alu_src = ~(op == 7'b1100011 || op == 7'b0110011);
     always_comb begin
-        reg_write = 0;
-        imm_src = 3'b00;
-        alu_src = 0;
-        mem_write = 0;
-        result_src = 0;
-        pc_src = 0;
-        case (instr[6:0])
-            // beq / bne (does not work for other branch types)
-            7'b1100011: begin
-                reg_write = 0;
-                imm_src = 3'b10;
-                alu_src = 0;
-                mem_write = 0;
-                pc_src = {1'b0, zero ^ instr[12]};
-                alu_op = 2'b01;
-            end
-            // i-type e.g. addi
-            7'b0010011: begin
-                reg_write = 1;
-                imm_src = 3'b00;
-                alu_src = 1;
-                mem_write = 0;
-                result_src = 0;
-                pc_src = 0;
-                alu_op = 2'b10;
-            end
-            // add
-            7'b0110011: begin
-                reg_write = 1;
-                alu_src = 0;
-                mem_write = 0;
-                result_src = 0;
-                pc_src = 0;
-                alu_op = 2'b10;
-            end
-            // lui
-            7'b0110111: begin
-                reg_write = 1;
-                imm_src = 3'b11;
-                alu_src = 1;
-                mem_write = 0;
-                result_src = 0;
-                pc_src = 0;
-                alu_op = 2'b00;
-            end
-            // sb
-            7'b0100011: begin
-                reg_write = 0;
-                imm_src = 3'b01;
-                alu_src = 1;
-                mem_write = 1;
-                pc_src = 0;
-                alu_op = 2'b00;
-            end
-            // lbu
-            7'b0000011: begin
-                reg_write = 1;
-                imm_src = 3'b00;
-                alu_src = 1;
-                mem_write = 0;
-                result_src = 1;
-                pc_src = 0;
-                alu_op = 2'b00;
-            end
-            // jal
-            7'b1101111: begin
-                reg_write = 1;
+        imm_src = 3'b000;
+        result_src = 2'b00;
+        pc_src = 2'b00;
+        alu_op = 2'b00;
+        case (op)
+            7'b0010011: alu_op = 2'b10; // I-TYPE
+            7'b0110011: alu_op = 2'b10; // R-TYPE
+            7'b0110111: imm_src = 3'b011; // LUI
+            7'b0100011: imm_src = 3'b001; // SB
+            7'b0000011: result_src = 2'b01; // LBU
+            7'b1101111: begin // JAL
                 imm_src = 3'b100;
-                alu_src = 1;
-                mem_write = 0;
                 result_src = 2'b10;
-                pc_src = 1;
-                alu_op = 2'b00;    
+                pc_src = 2'b01;
             end 
-            // jalr
-            7'b1100111: begin
-                reg_write = 0;
-                imm_src = 3'b00;
-                alu_src = 1;
-                mem_write = 0;
+            7'b1100111: begin // JALR (specifically RET as does not write to linking register)
                 result_src = 2'b10;
                 pc_src = 2'b10;
+            end
+            7'b1100011: begin // BEQ / BNE (does not work for other branch types)
+                imm_src = 3'b010;
+                pc_src = {1'b0, zero ^ instr[12]};
+                alu_op = 2'b01;
             end
             default: ;
         endcase

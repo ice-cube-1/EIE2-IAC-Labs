@@ -10,9 +10,7 @@ module reg_file (
     output logic [31:0] rd2
 );
     logic [31:0] rf_registers [31:0];
-    always_ff @(posedge clk) begin
-        if (reg_write) rf_registers[ad3] <= result;
-    end
+    always_ff @(posedge clk) if (reg_write) rf_registers[ad3] <= result;
     always_comb begin
         a0 = rf_registers[10];
         rd1 = rf_registers[ad1];

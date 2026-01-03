@@ -15,7 +15,6 @@ module alu (
             3'b101: result = {31'b0,($signed(a) < $signed(b))};
             3'b110: result = a << b[4:0];
             3'b111: result = a >> b[4:0];
-            default: result = 32'b0;
         endcase
     end
     assign zero = (result == 32'b0);
