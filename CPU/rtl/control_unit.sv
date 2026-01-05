@@ -1,8 +1,7 @@
 module control_unit (
     input logic [31:0] instr,
-    input logic zero,
-    output logic alu_src, mem_write, reg_write,
-    output logic [1:0] result_src, pc_src,
+    output logic alu_src, mem_write, reg_write, jump, branch,pc_reg,
+    output logic [1:0] result_src,
     output logic [2:0] alu_control, imm_src
 );
     logic [1:0] alu_op;
@@ -10,10 +9,12 @@ module control_unit (
     assign reg_write = (op == 7'b0010011 || op == 7'b0110011 || op == 7'b0110111 || op == 7'b0000011 || op == 7'b1101111);
     assign mem_write = (op == 7'b0100011);
     assign alu_src = ~(op == 7'b1100011 || op == 7'b0110011);
+    assign branch = (op == 7'b1100011);
+    assign jump = (op == 7'b1101111 || op == 7'b1100111);
+    assign pc_reg = (op == 7'b1100111);
     always_comb begin
         imm_src = 3'b000;
         result_src = 2'b00;
-        pc_src = 2'b00;
         alu_op = 2'b00;
         case (op)
             7'b0010011: alu_op = 2'b10; // I-TYPE
@@ -24,15 +25,12 @@ module control_unit (
             7'b1101111: begin // JAL
                 imm_src = 3'b100;
                 result_src = 2'b10;
-                pc_src = 2'b01;
             end 
             7'b1100111: begin // JALR (specifically RET as does not write to linking register)
                 result_src = 2'b10;
-                pc_src = 2'b10;
             end
             7'b1100011: begin // BEQ / BNE (does not work for other branch types)
                 imm_src = 3'b010;
-                pc_src = {1'b0, zero ^ instr[12]};
                 alu_op = 2'b01;
             end
             default: ;

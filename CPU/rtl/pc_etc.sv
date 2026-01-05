@@ -1,19 +1,14 @@
 module pc_etc (
     input logic clk,
     input logic rst,
-    input logic [31:0] imm_op,
-    input logic [31:0] alu_result,
-    input logic [1:0] pc_src,
+    input logic [31:0] pc_target,
+    input logic pc_src,
     output logic [31:0] pc, pc_plus_4
 );
     logic [31:0] next_pc;
     always_comb begin
-        pc_plus_4 = pc+31'b100;
-        case (pc_src) 
-            2'b00: next_pc = pc_plus_4;
-            2'b01: next_pc = pc + imm_op;
-            default: next_pc = alu_result;
-        endcase
+        pc_plus_4 = pc + 32'd4;
+        next_pc = pc_src ? pc_target : pc_plus_4;
     end
-    always_ff @(posedge clk) pc <= rst ? 0 : next_pc;
+    always_ff @(posedge clk) pc <= rst ? 32'd0 : next_pc;
 endmodule
