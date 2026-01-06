@@ -7,7 +7,7 @@ module decode (
     input logic reg_write_w,
     input logic clk,
     output logic[31:0] rd1_e, rd2_e, pc_e, rd_e, imm_ext_e, pc_plus_4_e,
-    output logic [11:0] control_bus_e
+    output logic [10:0] control_bus_e
 );
 logic [1:0] alu_op;
 logic [11:0] control_bus;
@@ -30,10 +30,10 @@ always_comb begin
     rd2 = rf_registers[instr[24:20]];
     control_bus[0] = (op == 7'b0010011 || op == 7'b0110011 || op == 7'b0110111 || op == 7'b0000011 || op == 7'b1101111);
     control_bus[3] = (op == 7'b0100011);
-    control_bus[10] = ~(op == 7'b1100011 || op == 7'b0110011);
+    control_bus[9] = ~(op == 7'b1100011 || op == 7'b0110011);
     control_bus[5] = (op == 7'b1100011);
     control_bus[4] = (op == 7'b1101111 || op == 7'b1100111);
-    control_bus[11] = (op == 7'b1100111);
+    control_bus[10] = (op == 7'b1100111) || (op == 7'b1100011 && instr[12]);
     imm_src = 3'b000;
     control_bus[2:1] = 2'b00;
     alu_op = 2'b00;
@@ -79,6 +79,6 @@ always_comb begin
         3'b100: imm_op = {{12{instr[31]}}, instr[19:12], instr[11], instr[30:21], 1'b0};
         default: imm_op = 32'b0;
     endcase
-    control_bus[9:6] = alu_control
+    control_bus[8:6] = alu_control
 end
 endmodule
