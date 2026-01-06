@@ -6,7 +6,8 @@ module decode (
     input logic [31:0] result_w,
     input logic reg_write_w,
     input logic clk,
-    output logic[31:0] rd1_e, rd2_e, pc_e, rd_e, imm_ext_e, pc_plus_4_e,
+    output logic[31:0] rd1_e, rd2_e, pc_e, imm_ext_e, pc_plus_4_e,
+    output logic [4:0] rd_e,
     output logic [10:0] control_bus_e
 );
 logic [1:0] alu_op;
