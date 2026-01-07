@@ -16,9 +16,19 @@ bfc00008:	00000593          	li	a1,0
 
 bfc0000c <iloop>:
 bfc0000c:	00058513          	mv	a0,a1
-bfc00010:	00158593          	addi	a1,a1,1
-bfc00014:	fe659ce3          	bne	a1,t1,bfc0000c <iloop>
-bfc00018:	00051263          	bnez	a0,bfc0001c <finish>
+bfc00010:	00000013          	nop
+bfc00014:	00000013          	nop
+bfc00018:	00158593          	addi	a1,a1,1
+bfc0001c:	00000013          	nop
+bfc00020:	00000013          	nop
+bfc00024:	fe6594e3          	bne	a1,t1,bfc0000c <iloop>
+bfc00028:	00000013          	nop
+bfc0002c:	00000013          	nop
+bfc00030:	00051663          	bnez	a0,bfc0003c <finish>
+bfc00034:	00000013          	nop
+bfc00038:	00000013          	nop
 
-bfc0001c <finish>:
-bfc0001c:	00051063          	bnez	a0,bfc0001c <finish>
+bfc0003c <finish>:
+bfc0003c:	00051063          	bnez	a0,bfc0003c <finish>
+bfc00040:	00000013          	nop
+bfc00044:	00000013          	nop

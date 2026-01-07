@@ -14,9 +14,9 @@ always_comb begin
     instr = {rom_array[pc+3], rom_array[pc+2], rom_array[pc+1], rom_array[pc]};
 end
 always_ff @(posedge clk) begin
+    pc <= rst ? 32'd0 : next_pc;
     instr_d <= instr;
     pc_plus_4_d <= pc_plus_4;
     pc_d <= pc;
-    pc <= rst ? 32'd0 : next_pc;
 end
 endmodule
