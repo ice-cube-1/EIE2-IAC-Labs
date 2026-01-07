@@ -12,7 +12,8 @@ module execute (
     output logic [4:0] rd_m,
     output logic [3:0] control_bus_m
 );
-logic b = control_bus_e[9] ? imm_ext_e : rd2_e;
+logic [31:0] b = control_bus_e[9] ? imm_ext_e : rd2_e;
+logic [31:0] result;
 always_comb begin
     case (control_bus_e[8:6])
         3'b000: result = rd1_e + b;
@@ -27,11 +28,11 @@ always_comb begin
 end
 assign pc_src_e = ((control_bus_e[10] ^ (result == 32'b0)) & control_bus_e[5]) | control_bus_e[4];
 assign pc_target_e = control_bus_e[10] ? rd1_e : pc_e+imm_ext_e;
-always_comb @(posedge clk) begin
+always_ff @(posedge clk) begin
     alu_result_m <= result;
     write_data_m <= rd2_e;
     rd_m <= rd_e;
     pc_plus_4_m <= pc_plus_4_e;
-    control_bus_m <= control_bus_e[3:0]
+    control_bus_m <= control_bus_e[3:0];
 end
 endmodule

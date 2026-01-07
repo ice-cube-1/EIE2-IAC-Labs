@@ -6,35 +6,36 @@ module decode (
     input logic [31:0] result_w,
     input logic reg_write_w,
     input logic clk,
-    output logic[31:0] rd1_e, rd2_e, pc_e, imm_ext_e, pc_plus_4_e,
+    output logic[31:0] rd1_e, rd2_e, pc_e, imm_ext_e, pc_plus_4_e, a0,
     output logic [4:0] rd_e,
     output logic [10:0] control_bus_e
 );
 logic [1:0] alu_op;
-logic [11:0] control_bus;
+logic [10:0] control_bus;
 logic [6:0] op = instr_d[6:0];
 logic [2:0] imm_src, alu_control;
 logic [31:0] rf_registers [31:0];
-logic [31:0] rd1, rd2;
+logic [31:0] rd1, rd2, imm_op;
 always_ff @(posedge clk) begin
     rd1_e <= rd1;
     rd2_e <= rd2;
     pc_e <= pc_d;
-    rd_e <= instr[11:7];
-    imm_ext_e <= imm_op
+    rd_e <= instr_d[11:7];
+    imm_ext_e <= imm_op;
     pc_plus_4_e <= pc_plus_4_d;
     control_bus_e <= control_bus;
 end
 always_ff @(negedge clk) if (reg_write_w) rf_registers[rd_w] <= result_w;
 always_comb begin
-    rd1 = rf_registers[instr[19:15]];
-    rd2 = rf_registers[instr[24:20]];
+    a0 = rf_registers[10];
+    rd1 = rf_registers[instr_d[19:15]];
+    rd2 = rf_registers[instr_d[24:20]];
     control_bus[0] = (op == 7'b0010011 || op == 7'b0110011 || op == 7'b0110111 || op == 7'b0000011 || op == 7'b1101111);
     control_bus[3] = (op == 7'b0100011);
     control_bus[9] = ~(op == 7'b1100011 || op == 7'b0110011);
     control_bus[5] = (op == 7'b1100011);
     control_bus[4] = (op == 7'b1101111 || op == 7'b1100111);
-    control_bus[10] = (op == 7'b1100111) || (op == 7'b1100011 && instr[12]);
+    control_bus[10] = (op == 7'b1100111) || (op == 7'b1100011 && instr_d[12]);
     imm_src = 3'b000;
     control_bus[2:1] = 2'b00;
     alu_op = 2'b00;
@@ -73,13 +74,13 @@ always_comb begin
         end
     endcase
     case (imm_src)
-        3'b00: imm_op = {{20{instr[31]}},instr[31:20]};
-        3'b01: imm_op = {{20{instr[31]}},instr[31:25],instr[11:7]};
-        3'b10: imm_op = {{20{instr[31]}},instr[7],instr[30:25],instr[11:8],1'b0};
-        3'b11: imm_op = {instr[31:12], {12{1'b0}}};
-        3'b100: imm_op = {{12{instr[31]}}, instr[19:12], instr[11], instr[30:21], 1'b0};
+        3'b00: imm_op = {{20{instr_d[31]}},instr_d[31:20]};
+        3'b01: imm_op = {{20{instr_d[31]}},instr_d[31:25],instr_d[11:7]};
+        3'b10: imm_op = {{20{instr_d[31]}},instr_d[7],instr_d[30:25],instr_d[11:8],1'b0};
+        3'b11: imm_op = {instr_d[31:12], {12{1'b0}}};
+        3'b100: imm_op = {{12{instr_d[31]}}, instr_d[19:12], instr_d[11], instr_d[30:21], 1'b0};
         default: imm_op = 32'b0;
     endcase
-    control_bus[8:6] = alu_control
+    control_bus[8:6] = alu_control;
 end
 endmodule
