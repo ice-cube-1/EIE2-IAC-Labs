@@ -10,13 +10,7 @@ mloop:
 
 iloop:
     addi    a0, a1, 0           # output = i
-    nop                         # RAW hazard (a1 -> a0)
-    nop
-
     addi    a1, a1, 1           # i++
-    nop                         # RAW hazard (a1 -> branch)
-    nop
-
     bne     a1, t1, iloop       # if i != 255, goto iloop
     nop                         # control hazard
     nop

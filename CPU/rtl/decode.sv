@@ -7,7 +7,7 @@ module decode (
     input logic reg_write_w,
     input logic clk,
     output logic[31:0] rd1_e, rd2_e, pc_e, imm_ext_e, pc_plus_4_e, a0,
-    output logic [4:0] rd_e,
+    output logic [4:0] rd_e, rs1_e, rs2_e,
     output logic [10:0] control_bus_e
 );
 logic [1:0] alu_op;
@@ -24,6 +24,8 @@ always_ff @(posedge clk) begin
     imm_ext_e <= imm_op;
     pc_plus_4_e <= pc_plus_4_d;
     control_bus_e <= control_bus;
+    rs1_e <= instr_d[19:15];
+    rs2_e <= instr_d[24:20];
 end
 always_ff @(negedge clk) if (reg_write_w) rf_registers[rd_w] <= result_w;
 always_comb begin

@@ -9,25 +9,15 @@ Disassembly of section .text:
 
 bfc00000 <main>:
 bfc00000:	ffffe337          	lui	t1,0xffffe
-bfc00004:	00000013          	nop
-bfc00008:	00000013          	nop
-bfc0000c:	cd830313          	addi	t1,t1,-808 # ffffdcd8 <__global_pointer$+0x403fc484>
-bfc00010:	00000013          	nop
-bfc00014:	00000013          	nop
-bfc00018:	000023b7          	lui	t2,0x2
+bfc00004:	cd830313          	addi	t1,t1,-808 # ffffdcd8 <__global_pointer$+0x403fc4ac>
+bfc00008:	000023b7          	lui	t2,0x2
+bfc0000c:	71038393          	addi	t2,t2,1808 # 2710 <main-0xbfbfd8f0>
+bfc00010:	00730533          	add	a0,t1,t2
+bfc00014:	00051663          	bnez	a0,bfc00020 <finish>
+bfc00018:	00000013          	nop
 bfc0001c:	00000013          	nop
-bfc00020:	00000013          	nop
-bfc00024:	71038393          	addi	t2,t2,1808 # 2710 <main-0xbfbfd8f0>
-bfc00028:	00000013          	nop
-bfc0002c:	00000013          	nop
-bfc00030:	00730533          	add	a0,t1,t2
-bfc00034:	00000013          	nop
-bfc00038:	00000013          	nop
-bfc0003c:	00051663          	bnez	a0,bfc00048 <finish>
-bfc00040:	00000013          	nop
-bfc00044:	00000013          	nop
 
-bfc00048 <finish>:
-bfc00048:	00051063          	bnez	a0,bfc00048 <finish>
-bfc0004c:	00000013          	nop
-bfc00050:	00000013          	nop
+bfc00020 <finish>:
+bfc00020:	00051063          	bnez	a0,bfc00020 <finish>
+bfc00024:	00000013          	nop
+bfc00028:	00000013          	nop
