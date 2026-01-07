@@ -5,7 +5,7 @@ module execute (
     input logic[4:0] rd_e,
     input logic[31:0] imm_ext_e,
     input logic[31:0] pc_plus_4_e,
-    input logic [11:0] control_bus_e,
+    input logic [10:0] control_bus_e,
     input logic clk,
     output logic pc_src_e,
     output logic [31:0] pc_target_e, alu_result_m, write_data_m, pc_plus_4_m,
