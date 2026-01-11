@@ -16,7 +16,9 @@ bfc00010:	007400a3          	sb	t2,1(s0)
 bfc00014:	00044e03          	lbu	t3,0(s0)
 bfc00018:	00144e83          	lbu	t4,1(s0)
 bfc0001c:	01de0533          	add	a0,t3,t4
-bfc00020:	00051263          	bnez	a0,bfc00024 <finish>
+bfc00020:	00051663          	bnez	a0,bfc0002c <finish>
+bfc00024:	00000013          	nop
+bfc00028:	00000013          	nop
 
-bfc00024 <finish>:
-bfc00024:	00051063          	bnez	a0,bfc00024 <finish>
+bfc0002c <finish>:
+bfc0002c:	00051063          	bnez	a0,bfc0002c <finish>

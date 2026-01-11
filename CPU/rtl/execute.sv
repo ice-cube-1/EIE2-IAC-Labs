@@ -3,6 +3,7 @@ module execute (
     input logic[31:0] rd2_e,
     input logic[31:0] pc_e,
     input logic[4:0] rd_e,
+    input logic[31:0] prev_result_w,
     input logic[31:0] imm_ext_e,
     input logic[31:0] pc_plus_4_e,
     input logic[31:0] result_w,
@@ -20,11 +21,13 @@ always_comb begin
     case (forwarda_e)
         2'b00: a = rd1_e;
         2'b01: a = result_w;
+        2'b11: a = prev_result_w;
         default: a = alu_result_m;
     endcase
     case (forwardb_e)
         2'b00: rd = rd2_e;
         2'b01: rd = result_w;
+        2'b11: rd = prev_result_w;
         default: rd = alu_result_m;
     endcase
     if (control_bus_e[9]) b = imm_ext_e;

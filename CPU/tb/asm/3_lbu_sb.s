@@ -11,6 +11,8 @@ main:
     lbu t4, 1(s0)   # t4 = *(0x00010001)    (=200)
     add a0, t3, t4  # a0 = t3 + t4          (=300)
     bne     a0, zero, finish    # enter finish state
+    nop
+    nop
 
 finish:     # expected result is 300
     bne     a0, zero, finish     # loop forever

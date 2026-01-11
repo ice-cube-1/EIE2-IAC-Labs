@@ -26,9 +26,9 @@ always_ff @(posedge clk) begin
         control_bus_e <= control_bus;
         rs1_e <= instr_d[19:15];
         rs2_e <= instr_d[24:20];
+        rd1_e <= rd1;
+        rd2_e <= rd2;
     end
-    rd1_e <= rd1;
-    rd2_e <= rd2;
 end
 always_ff @(negedge clk) begin
     if (reg_write_w) rf_registers[rd_w] <= result_w;
