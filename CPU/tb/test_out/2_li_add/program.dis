@@ -9,15 +9,11 @@ Disassembly of section .text:
 
 bfc00000 <main>:
 bfc00000:	ffffe337          	lui	t1,0xffffe
-bfc00004:	cd830313          	addi	t1,t1,-808 # ffffdcd8 <__global_pointer$+0x403fc4ac>
+bfc00004:	cd830313          	addi	t1,t1,-808 # ffffdcd8 <__global_pointer$+0x403fc4bc>
 bfc00008:	000023b7          	lui	t2,0x2
 bfc0000c:	71038393          	addi	t2,t2,1808 # 2710 <main-0xbfbfd8f0>
 bfc00010:	00730533          	add	a0,t1,t2
-bfc00014:	00051663          	bnez	a0,bfc00020 <finish>
-bfc00018:	00000013          	nop
-bfc0001c:	00000013          	nop
+bfc00014:	00051263          	bnez	a0,bfc00018 <finish>
 
-bfc00020 <finish>:
-bfc00020:	00051063          	bnez	a0,bfc00020 <finish>
-bfc00024:	00000013          	nop
-bfc00028:	00000013          	nop
+bfc00018 <finish>:
+bfc00018:	00051063          	bnez	a0,bfc00018 <finish>

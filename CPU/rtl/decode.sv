@@ -7,6 +7,7 @@ module decode (
     input logic reg_write_w,
     input logic clk,
     input logic stall,
+    input logic pc_src_e,
     output logic[31:0] rd1_e, rd2_e, pc_e, imm_ext_e, pc_plus_4_e, a0,
     output logic [4:0] rd_e, rs1_e, rs2_e,
     output logic [10:0] control_bus_e
@@ -19,15 +20,19 @@ logic [31:0] rf_registers [31:0];
 logic [31:0] rd1, rd2, imm_op;
 always_ff @(posedge clk) begin  
     if (~stall) begin
-        pc_e <= pc_d;
-        rd_e <= instr_d[11:7];
-        imm_ext_e <= imm_op;
-        pc_plus_4_e <= pc_plus_4_d;
-        control_bus_e <= control_bus;
-        rs1_e <= instr_d[19:15];
-        rs2_e <= instr_d[24:20];
-        rd1_e <= rd1;
-        rd2_e <= rd2;
+        if (~pc_src_e) begin
+            pc_e <= pc_d;
+            rd_e <= instr_d[11:7];
+            imm_ext_e <= imm_op;
+            pc_plus_4_e <= pc_plus_4_d;
+            control_bus_e <= control_bus;
+            rs1_e <= instr_d[19:15];
+            rs2_e <= instr_d[24:20];
+            rd1_e <= rd1;
+            rd2_e <= rd2;
+        end else begin
+            control_bus_e <= 0;
+        end
     end
 end
 always_ff @(negedge clk) begin

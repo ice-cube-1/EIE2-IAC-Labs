@@ -17,9 +17,15 @@ end
 always_ff @(posedge clk) begin
     if (~stall) begin
         pc <= rst ? 32'd0 : next_pc;
-        instr_d <= instr;
-        pc_plus_4_d <= pc_plus_4;
-        pc_d <= pc;
+        if (~pc_src_e) begin
+            instr_d <= instr;
+            pc_plus_4_d <= pc_plus_4;
+            pc_d <= pc;
+        end else begin
+            instr_d <= 32'h13;
+            pc_plus_4_d <= 0;
+            pc_d <= 0;
+        end
     end
 end
 endmodule
