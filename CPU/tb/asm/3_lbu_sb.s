@@ -7,11 +7,8 @@ main:
     sb t1, 0(s0)    # store 100 at address 0x00010000
     li t2, 200
     sb t2, 1(s0)    # store 200 at address 0x00010001
-
     lbu t3, 0(s0)   # t3 = *(0x00010000)    (=100)
-    nop
     lbu t4, 1(s0)   # t4 = *(0x00010001)    (=200)
-    nop
     add a0, t3, t4  # a0 = t3 + t4          (=300)
     bne     a0, zero, finish    # enter finish state
 

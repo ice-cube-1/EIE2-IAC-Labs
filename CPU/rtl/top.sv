@@ -13,13 +13,13 @@ logic [4:0] rd_e, rd_w, rd_m, rs1_e, rs2_e;
 logic [3:0] control_bus_m;
 logic [2:0] control_bus_w;
 logic [1:0] forwarda_e, forwardb_e;
-logic pc_src_e, reg_write_w;
+logic pc_src_e, reg_write_w, stall;
 fetch fetch (
-    .pc_target_e(pc_target_e), .pc_src_e(pc_src_e), .clk(clk), .rst(rst),
+    .pc_target_e(pc_target_e), .pc_src_e(pc_src_e), .clk(clk), .rst(rst), .stall(stall),
     .instr_d(instr_d), .pc_d(pc_d), .pc_plus_4_d(pc_plus_4_d)
 );
 decode decode (
-    .instr_d(instr_d), .pc_d(pc_d), .pc_plus_4_d(pc_plus_4_d), .rd_w(rd_w), .result_w(result_w), .reg_write_w(reg_write_w), .clk(clk), .a0(a0),
+    .instr_d(instr_d), .pc_d(pc_d), .pc_plus_4_d(pc_plus_4_d), .rd_w(rd_w), .result_w(result_w), .reg_write_w(reg_write_w), .clk(clk), .a0(a0), .stall(stall),
     .rd1_e(rd1_e), .rd2_e(rd2_e), .pc_e(pc_e), .imm_ext_e(imm_ext_e), .pc_plus_4_e(pc_plus_4_e), .rd_e(rd_e), .control_bus_e(control_bus_e), .rs2_e(rs2_e), .rs1_e(rs1_e)
 );
 execute execute (
@@ -36,6 +36,6 @@ writeback writeback (
 );
 hazard hazard (
     .reg_write_w(reg_write_w), .control_bus_m(control_bus_m), .rd_m(rd_m), .rd_w(rd_w), .rs1_e(rs1_e), .rs2_e(rs2_e), 
-    .forwarda_e(forwarda_e), .forwardb_e(forwardb_e)
+    .forwarda_e(forwarda_e), .forwardb_e(forwardb_e), .stall(stall)
 );
 endmodule

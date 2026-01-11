@@ -15,21 +15,20 @@ module execute (
     output logic [4:0] rd_m,
     output logic [3:0] control_bus_m
 );
-logic [31:0] a, b, result;
+logic [31:0] a, b, result,rd;
 always_comb begin
     case (forwarda_e)
         2'b00: a = rd1_e;
         2'b01: a = result_w;
         default: a = alu_result_m;
     endcase
+    case (forwardb_e)
+        2'b00: rd = rd2_e;
+        2'b01: rd = result_w;
+        default: rd = alu_result_m;
+    endcase
     if (control_bus_e[9]) b = imm_ext_e;
-    else begin
-        case (forwardb_e)
-            2'b00: b = rd2_e;
-            2'b01: b = result_w;
-            default: b = alu_result_m;
-        endcase
-    end
+    else b = rd;
     case (control_bus_e[8:6])
         3'b000: result = a + b;
         3'b001: result = a - b;
@@ -45,7 +44,7 @@ assign pc_src_e = ((control_bus_e[10] ^ (result == 32'b0)) & control_bus_e[5]) |
 assign pc_target_e = (control_bus_e[10] & control_bus_e[4]) ? a+imm_ext_e : pc_e+imm_ext_e;
 always_ff @(posedge clk) begin
     alu_result_m <= result;
-    write_data_m <= rd2_e;
+    write_data_m <= rd;
     rd_m <= rd_e;
     pc_plus_4_m <= pc_plus_4_e;
     control_bus_m <= control_bus_e[3:0];
