@@ -7,6 +7,7 @@ module decode (
     input logic reg_write_w,
     input logic clk,
     input logic stall,
+    input logic trigger,
     input logic pc_src_e,
     output logic[31:0] rd1_e, rd2_e, pc_e, imm_ext_e, pc_plus_4_e, a0,
     output logic [4:0] rd_e, rs1_e, rs2_e,
@@ -18,6 +19,7 @@ logic [6:0] op = instr_d[6:0];
 logic [2:0] imm_src, alu_control;
 logic [31:0] rf_registers [31:0];
 logic [31:0] rd1, rd2, imm_op;
+assign rf_registers[31] = {31'b0,trigger};
 always_ff @(posedge clk) begin  
     if (~stall) begin
         if (~pc_src_e) begin
