@@ -32,6 +32,7 @@ always_ff @(posedge clk) begin
             rd2_e <= rd2;
         end else begin
             control_bus_e <= 0;
+            rd_e <= 0;
         end
     end
 end

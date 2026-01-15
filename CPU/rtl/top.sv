@@ -35,7 +35,7 @@ writeback writeback (
     .result_w(result_w), .reg_write_w(reg_write_w), .rd_w(rd_w), .prev_rd_w(prev_rd_w), .prev_result_w(prev_result_w), .clk(clk)
 );
 hazard hazard (
-    .reg_write_w(reg_write_w), .control_bus_m(control_bus_m), .rd_m(rd_m), .rd_w(rd_w), .rs1_e(rs1_e), .rs2_e(rs2_e), 
-    .forwarda_e(forwarda_e), .forwardb_e(forwardb_e), .stall(stall), .prev_rd_w(prev_rd_w)
+    .reg_write_w(reg_write_w), .control_bus_m(control_bus_m), .rd_m(rd_m), .rd_w(rd_w), .rs1_e(rs1_e), .rs2_e(rs2_e),
+    .forwarda_e(forwarda_e), .forwardb_e(forwardb_e), .stall(stall), .prev_rd_w(prev_rd_w), .clk(clk)
 );
 endmodule

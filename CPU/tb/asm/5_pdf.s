@@ -31,7 +31,6 @@ _loop2:                         # repeat
     LBU     t0, 0(a5)           #     t0 = data value
     ADD     a6, t0, a3          #     a6 = index into pdf array
     LBU     t1, 0(a6)           #     t1 = current bin count
-    NOP
     ADDI    t1, t1, 1           #     increment bin count
     SB      t1, 0(a6)           #     update bin count
     ADDI    a2, a2, 1           #     point to next data in array
@@ -44,7 +43,6 @@ display:    # function send PDF array value to a0 for display
     LI      a2, 255             # a2 = max index of pdf array
 _loop3:                         # repeat
     LBU     a0, base_pdf(a1)    #   a0 = mem[base_pdf+a1)
-    NOP
     ADD     s1, s1, a0          #   s1 += mem[base_pdf+a1)
     ADDI    a1, a1, 1           #   incr
     BNE     a1, a2, _loop3      # until end of pdf array
