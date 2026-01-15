@@ -15,3 +15,4 @@ main:
 
 finish:     # expected result is 300
     bne     a0, zero, finish     # loop forever
+    

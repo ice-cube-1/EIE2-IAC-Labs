@@ -15,3 +15,4 @@ iloop:
 
 finish:      # expected result is 254
     bne     a0, zero, finish     # loop forever
+    

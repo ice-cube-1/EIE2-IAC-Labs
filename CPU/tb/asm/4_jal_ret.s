@@ -14,3 +14,4 @@ finish:     # function to set the return value then wait
     addi    a0, t1, 0           # a0 = t1 (expected = 53)
 _wait:
     bne     a0, zero, _wait     # loop forever
+    

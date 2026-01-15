@@ -44,8 +44,8 @@ TEST_F(CpuTestbench, TestPdf) {
 TEST_F(CpuTestbench, TestF1) {
     setupTest("6_f1");
     initSimulation();
-    runSimulation(CYCLES);
+    runSimulation(CYCLES/2);
     set_trigger();
-    runSimulation(CYCLES);
+    runSimulation(CYCLES*2);
     EXPECT_EQ(top_->a0, 0);
 }

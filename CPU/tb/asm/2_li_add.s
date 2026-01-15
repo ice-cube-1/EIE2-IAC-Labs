@@ -10,3 +10,4 @@ main:
 
 finish:     # expected result is 1000
     bne     a0, zero, finish     # loop forever
+    

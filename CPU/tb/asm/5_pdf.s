@@ -14,6 +14,7 @@ main:
 
 init:       # function to initialise PDF buffer memory
     LI      a1, 0x100           # loop_count a1 = 256
+
 _loop1:                         # repeat
     ADDI    a1, a1, -1          #     decrement a1
     SB      zero, base_pdf(a1)  #     mem[base_pdf+a1) = 0
